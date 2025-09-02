@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>스시밥 계산기</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b0f14">
+  <style>
+    body{font-family:sans-serif;background:#0b0f14;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{background:#11161d;padding:20px;border-radius:12px;max-width:400px;width:100%}
+    input,select{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #444;background:#0e141b;color:#fff}
+    button{padding:10px 16px;border:none;border-radius:8px;background:#60a5fa;color:#000;font-weight:bold;cursor:pointer;width:100%}
+    .result{margin-top:20px;font-size:18px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>스시밥 계산기</h1>
+    <label>밥 무게 (g)</label>
+    <input id="rice" type="number" value="1000" />
+    <label>반올림 단위</label>
+    <select id="round">
+      <option value="1">1 g</option>
+      <option value="5" selected>5 g</option>
+      <option value="10">10 g</option>
+    </select>
+    <button onclick="calc()">계산하기</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function roundTo(val, unit){return Math.round(val/unit)*unit;}
+    function calc(){
+      const r = Number(document.getElementById('rice').value)||0;
+      const unit = Number(document.getElementById('round').value)||1;
+      const water = roundTo(r*0.85, unit);
+      const vinegar = roundTo(r*0.26, unit);
+      document.getElementById('result').innerText = `밥 ${r} g → 물 ${water} g, 초대리 ${vinegar} g`;
+    }
+    calc();
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
